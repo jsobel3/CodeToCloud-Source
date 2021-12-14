@@ -5,7 +5,7 @@ services:
     ports:
       - "3001:3001"
   web:
-    image: ghcr.io/<yourgithubaccount>/fabrikam-web:latest
+    image: ghcr.io/jsobel3/fabrikam-web:latest
     depends_on:
         - api
     environment:
