@@ -1,0 +1,1 @@
+mongodb://fabmedical-cdb-jss:tU5J0jXQqXgOzEhYG8h3aOgnS1PaXZuw7IYNdXYN2mEEQ7ufu2sdwHDipEiNnog9C3SClZdVgf9H2sCuoEbdHw==@fabmedical-cdb-jss.mongo.cosmos.azure.com:10255/contentdb?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@fabmedical-cdb-jss@

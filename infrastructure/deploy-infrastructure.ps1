@@ -24,3 +24,9 @@ az appservice plan create --name $planName --resource-group $resourcegroupName -
 
 #Create a Azure Web App with NGINX container
 az webapp create --resource-group $resourcegroupName --plan $planName --name $webappName -i nginx
+
+az extension add --name application-insights
+$ai = az monitor app-insights component create --app $appInsights --location $location1 --kind web -g $resourcegroupName --application-type web --retention-time 120 | ConvertFrom-Json
+
+
+Write-Host "AI Instrumentation Key=$($ai.instrumentationKey)"
