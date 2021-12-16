@@ -9,7 +9,7 @@ $webappName = "fabmedical-web-" + $studentprefix
 $planName = "fabmedical-plan-" + $studentprefix
 $location1 = "eastus"
 $location2 = "centralus"
-$appInsights = "fabmedicalai-" + $studentsuffix
+$appInsights = "fabmedicalai-" + $studentprefix
 
 #First create a group
 $rg = az group create --name $resourcegroupName --location $location1 | ConvertFrom-Json 
@@ -18,7 +18,7 @@ $rg = az group create --name $resourcegroupName --location $location1 | ConvertF
 az cosmosdb create --name $cosmosDBName `
 --resource-group $resourcegroupName `
 --locations regionName=$location1 failoverPriority=0 isZoneRedundant=False `
---locations regionName=$location2 failoverPriority=1 isZoneRedundant=True `
+--locations regionName=$location2 failoverPriority=1 isZoneRedundant=False `
 --enable-multiple-write-locations `
 --kind MongoDB
 
