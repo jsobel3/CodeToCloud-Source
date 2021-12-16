@@ -6,11 +6,9 @@ name: Docker Compose Build and Deploy
 # documentation.
 
 on:
-  schedule:
-    - cron: '24 16 * * *'
   push:
-    branches: [ main ]
-    # Publish semver tags as releases.
+    branches-ignore:
+      - '**'
     tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ main ]
