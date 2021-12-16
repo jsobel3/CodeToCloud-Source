@@ -1,0 +1,66 @@
+name: Docker Compose Build and Deploy
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+on:
+  schedule:
+    - cron: '24 16 * * *'
+  push:
+    branches: [ main ]
+    # Publish semver tags as releases.
+    tags: [ 'v*.*.*' ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Log into GitHub Container Registry
+        run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
+      
+      - name: Build and Push image
+        run: |  
+          docker-compose -f docker-compose.yml -f build.docker-compose.yml build
+          docker-compose -f docker-compose.yml -f build.docker-compose.yml push
+
+      # Install the cosign tool except on PR
+      # https://github.com/sigstore/cosign-installer
+      - name: Install cosign
+        if: github.event_name != 'pull_request'
+        uses: sigstore/cosign-installer@1e95c1de343b5b0c23352d6417ee3e48d5bcd422
+        with:
+          cosign-release: 'v1.4.0'
+      
+      - name: Login on Azure CLI
+        uses: azure/login@v1.1
+        with:
+            creds: ${{secrets.AZURE_CREDENTIALS}}
+            
+      - name: Deploy Infrastructure
+        shell: pwsh
+        env:
+            CR_PAT: ${{ secrets.CR_PAT }}        
+        run: |
+          .\infrastructure\deploy-infrastructure.ps1 -studentprefix jss
