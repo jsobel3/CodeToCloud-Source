@@ -50,5 +50,3 @@ az webapp config container set `
 #In place for the setup-appinsights.ps1 file due to misunderstanding
 az extension add --name application-insights
 az monitor app-insights component create --app $appInsights --location $location1 --kind web -g $resourcegroupName --application-type web --retention-time 120
-
-Write-Host "AI Instrumentation Key=$($ai.instrumentationKey)"
