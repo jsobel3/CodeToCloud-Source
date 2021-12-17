@@ -45,8 +45,9 @@ az webapp config container set `
 --multicontainer-config-file docker-compose.yml `
 --multicontainer-config-type COMPOSE `
 --name $($webappName) `
---resource-group $resourcegroupName 
+--resource-group $resourcegroupName
 
+#In place for the setup-appinsights.ps1 file due to misunderstanding
 az extension add --name application-insights
 az monitor app-insights component create --app $appInsights --location $location1 --kind web -g $resourcegroupName --application-type web --retention-time 120
 
